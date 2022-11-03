@@ -1,8 +1,22 @@
 ﻿using NiTiS.Bots.NiTiSMaid;
+using NiTiS.IO;
+using Serilog;
 
-Bot bot = new(new File("token.txt").ReadAllText(), new(true, new ulong[]
+internal class Program
 {
-	508012163307143168,
-}));
+	private static void Main(string[] args)
+	{
+		Log.Logger = new LoggerConfiguration()
+			.WriteTo.Console()
+			.WriteTo.File("last.log")
+			.CreateLogger();
 
-bot.Start();
+		NiTiSMaidBot bot = new(new File("token.txt").ReadAllText(), new()
+		{
+			Debug = true,
+			OwnerIDs = new ulong[] { 508012163307143168 },
+		});
+
+		bot.Start();
+	}
+}
